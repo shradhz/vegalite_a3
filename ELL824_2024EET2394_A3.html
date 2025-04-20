@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vega-Lite Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 20px;
+      }
+      h2 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>ELL824 Assignment 3 – Multiview Vega-Lite Dashboard</h2>
+    <div id="vis"></div>
+
+    <script type="text/javascript">
+      const spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "vconcat": [
+    {
+      "hconcat": [
+        {
+          "title": "Donut Chart",
+          "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+          "description": "A simple donut chart with embedded data.",
+          "data": {
+            "values": [
+              {"Rep": "Jones", "Total": 189.05},
+              {"Rep": "Kivell", "Total": 999.5},
+              {"Rep": "Jardine", "Total": 179.64},
+              {"Rep": "Gill", "Total": 539.73},
+              {"Rep": "Sorvino", "Total": 167.44},
+              {"Rep": "Jones", "Total": 299.4},
+              {"Rep": "Andrews", "Total": 149.25},
+              {"Rep": "Jardine", "Total": 449.1},
+              {"Rep": "Thompson", "Total": 63.68},
+              {"Rep": "Jones", "Total": 539.4},
+              {"Rep": "Morgan", "Total": 449.1},
+              {"Rep": "Howard", "Total": 57.71},
+              {"Rep": "Parent", "Total": 1619.19},
+              {"Rep": "Jones", "Total": 174.65},
+              {"Rep": "Smith", "Total": 250},
+              {"Rep": "Jones", "Total": 255.84},
+              {"Rep": "Morgan", "Total": 251.72},
+              {"Rep": "Jones", "Total": 575.36},
+              {"Rep": "Parent", "Total": 299.85},
+              {"Rep": "Kivell", "Total": 479.04},
+              {"Rep": "Smith", "Total": 86.43},
+              {"Rep": "Parent", "Total": 1183.26},
+              {"Rep": "Gill", "Total": 413.54},
+              {"Rep": "Smith", "Total": 1305},
+              {"Rep": "Jones", "Total": 19.96},
+              {"Rep": "Sorvino", "Total": 139.93},
+              {"Rep": "Jardine", "Total": 249.5},
+              {"Rep": "Andrews", "Total": 131.34},
+              {"Rep": "Howard", "Total": 479.04},
+              {"Rep": "Gill", "Total": 68.37},
+              {"Rep": "Gill", "Total": 719.2},
+              {"Rep": "Kivell", "Total": 625},
+              {"Rep": "Jones", "Total": 309.38},
+              {"Rep": "Morgan", "Total": 686.95},
+              {"Rep": "Kivell", "Total": 1005.9},
+              {"Rep": "Sorvino", "Total": 825},
+              {"Rep": "Gill", "Total": 9.03},
+              {"Rep": "Sorvino", "Total": 151.24},
+              {"Rep": "Thompson", "Total": 1139.43},
+              {"Rep": "Andrews", "Total": 18.06},
+              {"Rep": "Jardine", "Total": 54.89},
+              {"Rep": "Jardine", "Total": 1879.06},
+              {"Rep": "Andrews", "Total": 139.72}
+            ]
+          },
+          "transform": [
+            {
+              "window": [{"op": "sum", "field": "Total", "as": "TotalSales"}],
+              "groupby": ["Rep"]
+            }
+          ],
+          "layer": [
+            {
+              "mark": {"type": "arc", "innerRadius": 60},
+              "encoding": {
+                "theta": {"field": "Total", "type": "quantitative"},
+                "color": {"field": "Rep", "type": "nominal"},
+                "tooltip": [
+                  {
+                    "field": "Rep",
+                    "type": "nominal",
+                    "title": "Representative"
+                  },
+                  {
+                    "field": "Total",
+                    "type": "quantitative",
+                    "format": ".2f",
+                    "title": "Value"
+                  },
+                  {
+                    "field": "TotalSales",
+                    "type": "quantitative",
+                    "format": ".2f",
+                    "title": "Total Sales (per Rep)"
+                  }
+                ]
+              }
+            },
+            {
+              "mark": {
+                "type": "text",
+                "fontSize": 18,
+                "fontWeight": "bold",
+                "align": "center"
+              },
+              "encoding": {
+                "text": {
+                  "aggregate": "sum",
+                  "field": "Total",
+                  "type": "quantitative",
+                  "format": "$,.2f",
+                  "title": "Total Sales"
+                }
+              }
+            }
+          ],
+          "config": {}
+        },
+        {
+          "title": "Scatter Plot",
+          "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+          "description": "Scatter plot showing correlation between Units and Unit Cost with a rectangular brush to highlight Items.",
+          "data": {
+            "values": [
+              {"Item": "Pencil", "Units": 95, "UnitCost": 1.99},
+              {"Item": "Binder", "Units": 50, "UnitCost": 19.99},
+              {"Item": "Pencil", "Units": 36, "UnitCost": 4.99},
+              {"Item": "Pen", "Units": 27, "UnitCost": 19.99},
+              {"Item": "Pencil", "Units": 56, "UnitCost": 2.99},
+              {"Item": "Binder", "Units": 60, "UnitCost": 4.99},
+              {"Item": "Pencil", "Units": 75, "UnitCost": 1.99},
+              {"Item": "Pencil", "Units": 90, "UnitCost": 4.99},
+              {"Item": "Pencil", "Units": 32, "UnitCost": 1.99},
+              {"Item": "Binder", "Units": 60, "UnitCost": 8.99},
+              {"Item": "Pencil", "Units": 90, "UnitCost": 4.99},
+              {"Item": "Binder", "Units": 29, "UnitCost": 1.99},
+              {"Item": "Binder", "Units": 81, "UnitCost": 19.99},
+              {"Item": "Pencil", "Units": 35, "UnitCost": 4.99},
+              {"Item": "Desk", "Units": 2, "UnitCost": 125},
+              {"Item": "Pen Set", "Units": 16, "UnitCost": 15.99},
+              {"Item": "Binder", "Units": 28, "UnitCost": 8.99},
+              {"Item": "Pen", "Units": 64, "UnitCost": 8.99},
+              {"Item": "Pen", "Units": 15, "UnitCost": 19.99},
+              {"Item": "Pen Set", "Units": 96, "UnitCost": 4.99},
+              {"Item": "Pencil", "Units": 67, "UnitCost": 1.29},
+              {"Item": "Pen Set", "Units": 74, "UnitCost": 15.99},
+              {"Item": "Binder", "Units": 46, "UnitCost": 8.99},
+              {"Item": "Binder", "Units": 87, "UnitCost": 15},
+              {"Item": "Binder", "Units": 4, "UnitCost": 4.99},
+              {"Item": "Binder", "Units": 7, "UnitCost": 19.99},
+              {"Item": "Pen Set", "Units": 50, "UnitCost": 4.99},
+              {"Item": "Pencil", "Units": 66, "UnitCost": 1.99},
+              {"Item": "Pen", "Units": 96, "UnitCost": 4.99},
+              {"Item": "Pencil", "Units": 53, "UnitCost": 1.29},
+              {"Item": "Binder", "Units": 80, "UnitCost": 8.99},
+              {"Item": "Desk", "Units": 5, "UnitCost": 125},
+              {"Item": "Pen Set", "Units": 62, "UnitCost": 4.99},
+              {"Item": "Pen Set", "Units": 55, "UnitCost": 12.49},
+              {"Item": "Pen Set", "Units": 42, "UnitCost": 23.95},
+              {"Item": "Desk", "Units": 3, "UnitCost": 275},
+              {"Item": "Pencil", "Units": 7, "UnitCost": 1.29},
+              {"Item": "Pen", "Units": 76, "UnitCost": 1.99},
+              {"Item": "Binder", "Units": 57, "UnitCost": 19.99},
+              {"Item": "Pencil", "Units": 14, "UnitCost": 1.29},
+              {"Item": "Binder", "Units": 11, "UnitCost": 4.99},
+              {"Item": "Binder", "Units": 94, "UnitCost": 19.99},
+              {"Item": "Binder", "Units": 28, "UnitCost": 4.99}
+            ]
+          },
+          "selection": {"brush": {"type": "interval", "encodings": ["x", "y"]}},
+          "mark": "circle",
+          "encoding": {
+            "x": {
+              "field": "Units",
+              "type": "quantitative",
+              "title": "Number of Units"
+            },
+            "y": {
+              "field": "UnitCost",
+              "type": "quantitative",
+              "title": "Unit Cost ($)"
+            },
+            "color": {
+              "condition": {
+                "selection": "brush",
+                "field": "Item",
+                "type": "nominal"
+              },
+              "value": "lightgray"
+            },
+            "tooltip": [
+              {"field": "Item", "type": "nominal"},
+              {"field": "Units", "type": "quantitative"},
+              {"field": "UnitCost", "type": "quantitative"}
+            ]
+          },
+          "config": {}
+        },
+        {
+          "title": "Streamgraph",
+          "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+          "description": "Streamgraph showing how Total varied over time for each Item.",
+          "data": {
+            "values": [
+              {"Date": "2021-01-06", "Item": "Pencil", "Total": 189.05},
+              {"Date": "2021-01-23", "Item": "Binder", "Total": 999.5},
+              {"Date": "2021-02-09", "Item": "Pencil", "Total": 179.64},
+              {"Date": "2021-02-26", "Item": "Pen", "Total": 539.73},
+              {"Date": "2021-03-15", "Item": "Pencil", "Total": 167.44},
+              {"Date": "2021-04-01", "Item": "Binder", "Total": 299.4},
+              {"Date": "2021-04-18", "Item": "Pencil", "Total": 149.25},
+              {"Date": "2021-05-05", "Item": "Pencil", "Total": 449.1},
+              {"Date": "2021-05-22", "Item": "Pencil", "Total": 63.68},
+              {"Date": "2021-06-08", "Item": "Binder", "Total": 539.4},
+              {"Date": "2021-06-25", "Item": "Pencil", "Total": 449.1},
+              {"Date": "2021-07-12", "Item": "Binder", "Total": 57.71},
+              {"Date": "2021-07-29", "Item": "Binder", "Total": 1619.19},
+              {"Date": "2021-08-15", "Item": "Pencil", "Total": 174.65},
+              {"Date": "2021-09-01", "Item": "Desk", "Total": 250},
+              {"Date": "2021-09-18", "Item": "Pen Set", "Total": 255.84},
+              {"Date": "2021-10-05", "Item": "Binder", "Total": 251.72},
+              {"Date": "2021-10-22", "Item": "Pen", "Total": 575.36},
+              {"Date": "2021-11-08", "Item": "Pen", "Total": 299.85},
+              {"Date": "2021-11-25", "Item": "Pen Set", "Total": 479.04},
+              {"Date": "2021-12-12", "Item": "Pencil", "Total": 86.43},
+              {"Date": "2021-12-29", "Item": "Pen Set", "Total": 1183.26},
+              {"Date": "2022-01-15", "Item": "Binder", "Total": 413.54},
+              {"Date": "2022-02-01", "Item": "Binder", "Total": 1305},
+              {"Date": "2022-02-18", "Item": "Binder", "Total": 19.96},
+              {"Date": "2022-03-07", "Item": "Binder", "Total": 139.93},
+              {"Date": "2022-03-24", "Item": "Pen Set", "Total": 249.5},
+              {"Date": "2022-04-10", "Item": "Pencil", "Total": 131.34},
+              {"Date": "2022-04-27", "Item": "Pen", "Total": 479.04},
+              {"Date": "2022-05-14", "Item": "Pencil", "Total": 68.37},
+              {"Date": "2022-05-31", "Item": "Binder", "Total": 719.2},
+              {"Date": "2022-06-17", "Item": "Desk", "Total": 625},
+              {"Date": "2022-07-04", "Item": "Pen Set", "Total": 309.38},
+              {"Date": "2022-07-21", "Item": "Pen Set", "Total": 686.95},
+              {"Date": "2022-08-07", "Item": "Pen Set", "Total": 1005.9},
+              {"Date": "2022-08-24", "Item": "Desk", "Total": 825},
+              {"Date": "2022-09-10", "Item": "Pencil", "Total": 9.03},
+              {"Date": "2022-09-27", "Item": "Pen", "Total": 151.24},
+              {"Date": "2022-10-14", "Item": "Binder", "Total": 1139.43},
+              {"Date": "2022-10-31", "Item": "Pencil", "Total": 18.06},
+              {"Date": "2022-11-17", "Item": "Binder", "Total": 54.89},
+              {"Date": "2022-12-04", "Item": "Binder", "Total": 1879.06},
+              {"Date": "2022-12-21", "Item": "Binder", "Total": 139.72}
+            ]
+          },
+          "transform": [{"calculate": "toDate(datum.Date)", "as": "Date"}],
+          "mark": "area",
+          "encoding": {
+            "x": {
+              "field": "Date",
+              "type": "temporal",
+              "title": "Date",
+              "axis": {"format": "%b %Y", "tickCount": "month"}
+            },
+            "y": {
+              "field": "Total",
+              "type": "quantitative",
+              "stack": "center",
+              "title": "Total Sales"
+            },
+            "color": {"field": "Item", "type": "nominal", "title": "Item"},
+            "tooltip": [
+              {
+                "field": "Date",
+                "type": "temporal",
+                "title": "Date",
+                "format": "%b %d, %Y"
+              },
+              {"field": "Item", "type": "nominal", "title": "Item"},
+              {
+                "field": "Total",
+                "type": "quantitative",
+                "title": "Total Sales",
+                "format": ".2f"
+              }
+            ]
+          },
+          "config": {}
+        }
+        
+      ]
+    },
+    {
+      "hconcat": [
+        {
+          "title": "Histogram",
+          "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+          "description": "Histogram of Units with a global mean overlay.",
+          "data": {
+            "values": [
+              {"Units": 95},
+              {"Units": 50},
+              {"Units": 36},
+              {"Units": 27},
+              {"Units": 56},
+              {"Units": 60},
+              {"Units": 75},
+              {"Units": 90},
+              {"Units": 32},
+              {"Units": 60},
+              {"Units": 90},
+              {"Units": 29},
+              {"Units": 81},
+              {"Units": 35},
+              {"Units": 2},
+              {"Units": 16},
+              {"Units": 28},
+              {"Units": 64},
+              {"Units": 15},
+              {"Units": 96},
+              {"Units": 67},
+              {"Units": 74},
+              {"Units": 46},
+              {"Units": 87},
+              {"Units": 4},
+              {"Units": 7},
+              {"Units": 50},
+              {"Units": 66},
+              {"Units": 96},
+              {"Units": 53},
+              {"Units": 80},
+              {"Units": 5},
+              {"Units": 62},
+              {"Units": 55},
+              {"Units": 42},
+              {"Units": 3},
+              {"Units": 7},
+              {"Units": 76},
+              {"Units": 57},
+              {"Units": 14},
+              {"Units": 11},
+              {"Units": 94},
+              {"Units": 28}
+            ]
+          },
+          "layer": [
+            {
+              "mark": "bar",
+              "encoding": {
+                "x": {
+                  "bin": true,
+                  "field": "Units",
+                  "type": "quantitative",
+                  "title": "Units"
+                },
+                "y": {
+                  "aggregate": "count",
+                  "type": "quantitative",
+                  "title": "Count"
+                },
+                "color": {"value": "#4C78A8"}
+              }
+            },
+            {
+              "mark": {"type": "rule", "color": "red", "strokeWidth": 2},
+              "encoding": {
+                "x": {
+                  "aggregate": "mean",
+                  "field": "Units",
+                  "type": "quantitative",
+                  "title": "Mean Units"
+                },
+                "tooltip": [
+                  {
+                    "aggregate": "mean",
+                    "field": "Units",
+                    "type": "quantitative",
+                    "title": "Global Mean",
+                    "format": ".2f"
+                  }
+                ]
+              }
+            }
+          ],
+          "config": {}
+        },
+        {
+          "title": "Regional Sales Distribution (Stacked Bar Chart)",
+          "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+          "description": "Regional Sales Distribution (Stacked Bar Chart)",
+          "width": 250,
+          "height": 300,
+          "data": {
+            "values": [
+              {"Region": "East", "Item": "Pencil", "Total": 189.05},
+              {"Region": "Central", "Item": "Binder", "Total": 999.5},
+              {"Region": "Central", "Item": "Pencil", "Total": 179.64},
+              {"Region": "Central", "Item": "Pen", "Total": 539.73},
+              {"Region": "West", "Item": "Pencil", "Total": 167.44},
+              {"Region": "East", "Item": "Binder", "Total": 299.4},
+              {"Region": "Central", "Item": "Pencil", "Total": 149.25},
+              {"Region": "Central", "Item": "Pencil", "Total": 449.1},
+              {"Region": "West", "Item": "Pencil", "Total": 63.68},
+              {"Region": "East", "Item": "Binder", "Total": 539.4},
+              {"Region": "Central", "Item": "Pencil", "Total": 449.1},
+              {"Region": "East", "Item": "Binder", "Total": 57.71},
+              {"Region": "East", "Item": "Binder", "Total": 1619.19},
+              {"Region": "East", "Item": "Pencil", "Total": 174.65},
+              {"Region": "Central", "Item": "Desk", "Total": 250},
+              {"Region": "East", "Item": "Pen Set", "Total": 255.84},
+              {"Region": "Central", "Item": "Binder", "Total": 251.72},
+              {"Region": "East", "Item": "Pen", "Total": 575.36},
+              {"Region": "East", "Item": "Pen", "Total": 299.85},
+              {"Region": "Central", "Item": "Pen Set", "Total": 479.04},
+              {"Region": "Central", "Item": "Pencil", "Total": 86.43},
+              {"Region": "East", "Item": "Pen Set", "Total": 1183.26},
+              {"Region": "Central", "Item": "Binder", "Total": 413.54},
+              {"Region": "Central", "Item": "Binder", "Total": 1305},
+              {"Region": "East", "Item": "Binder", "Total": 19.96},
+              {"Region": "West", "Item": "Binder", "Total": 139.93},
+              {"Region": "Central", "Item": "Pen Set", "Total": 249.5},
+              {"Region": "Central", "Item": "Pencil", "Total": 131.34},
+              {"Region": "East", "Item": "Pen", "Total": 479.04},
+              {"Region": "Central", "Item": "Pencil", "Total": 68.37},
+              {"Region": "Central", "Item": "Binder", "Total": 719.2},
+              {"Region": "Central", "Item": "Desk", "Total": 625},
+              {"Region": "East", "Item": "Pen Set", "Total": 309.38},
+              {"Region": "Central", "Item": "Pen Set", "Total": 686.95},
+              {"Region": "Central", "Item": "Pen Set", "Total": 1005.9},
+              {"Region": "West", "Item": "Desk", "Total": 825},
+              {"Region": "Central", "Item": "Pencil", "Total": 9.03},
+              {"Region": "West", "Item": "Pen", "Total": 151.24},
+              {"Region": "West", "Item": "Binder", "Total": 1139.43},
+              {"Region": "Central", "Item": "Pencil", "Total": 18.06},
+              {"Region": "Central", "Item": "Binder", "Total": 54.89},
+              {"Region": "Central", "Item": "Binder", "Total": 1879.06},
+              {"Region": "Central", "Item": "Binder", "Total": 139.72}
+            ]
+          },
+          "layer": [
+            {
+              "mark": "bar",
+              "encoding": {
+                "x": {"field": "Region", "type": "nominal", "title": "Region"},
+                "y": {
+                  "field": "Total",
+                  "type": "quantitative",
+                  "title": "Total Sales"
+                },
+                "color": {"field": "Item", "type": "nominal", "title": "Item"},
+                "tooltip": [
+                  {"field": "Region", "type": "nominal", "title": "Region"},
+                  {"field": "Item", "type": "nominal", "title": "Item"},
+                  {
+                    "field": "Total",
+                    "type": "quantitative",
+                    "title": "Sales ($)"
+                  }
+                ]
+              }
+            },
+            {
+              "mark": {
+                "type": "text",
+                "align": "center",
+                "dy": -10,
+                "fontSize": 12
+              },
+              "encoding": {
+                "x": {"field": "Region", "type": "nominal"},
+                "y": {
+                  "field": "Total",
+                  "type": "quantitative",
+                  "aggregate": "sum"
+                },
+                "text": {
+                  "field": "Total",
+                  "type": "quantitative",
+                  "aggregate": "sum",
+                  "format": ".2f"
+                }
+              }
+            }
+          ],
+          "config": {}
+        },
+        {
+          "title": {
+            "text": "Trellis Chart – Sales Performance Over Time by Region",
+            "anchor": "middle",
+            "offset": 5
+          },
+          "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+          "description": "Trellis Chart – Sales Performance Over Time by Region",
+          "data": {
+            "values": [
+              {"OrderDate": "2021-01", "Region": "East", "Total": 189.05},
+              {"OrderDate": "2021-01", "Region": "Central", "Total": 999.5},
+              {"OrderDate": "2021-02", "Region": "Central", "Total": 179.64},
+              {"OrderDate": "2021-02", "Region": "Central", "Total": 539.73},
+              {"OrderDate": "2021-03", "Region": "West", "Total": 167.44},
+              {"OrderDate": "2021-04", "Region": "East", "Total": 299.4},
+              {"OrderDate": "2021-04", "Region": "Central", "Total": 149.25},
+              {"OrderDate": "2021-05", "Region": "Central", "Total": 449.1},
+              {"OrderDate": "2021-05", "Region": "West", "Total": 63.68},
+              {"OrderDate": "2021-06", "Region": "East", "Total": 539.4},
+              {"OrderDate": "2021-06", "Region": "Central", "Total": 449.1},
+              {"OrderDate": "2021-07", "Region": "East", "Total": 57.71},
+              {"OrderDate": "2021-07", "Region": "East", "Total": 1619.19},
+              {"OrderDate": "2021-08", "Region": "East", "Total": 174.65},
+              {"OrderDate": "2021-09", "Region": "Central", "Total": 250},
+              {"OrderDate": "2021-09", "Region": "East", "Total": 255.84},
+              {"OrderDate": "2021-10", "Region": "Central", "Total": 251.72},
+              {"OrderDate": "2021-10", "Region": "East", "Total": 575.36},
+              {"OrderDate": "2021-11", "Region": "East", "Total": 299.85},
+              {"OrderDate": "2021-11", "Region": "Central", "Total": 479.04},
+              {"OrderDate": "2021-12", "Region": "Central", "Total": 86.43},
+              {"OrderDate": "2021-12", "Region": "East", "Total": 1183.26},
+              {"OrderDate": "2022-01", "Region": "Central", "Total": 413.54},
+              {"OrderDate": "2022-02", "Region": "Central", "Total": 1305},
+              {"OrderDate": "2022-02", "Region": "East", "Total": 19.96},
+              {"OrderDate": "2022-03", "Region": "West", "Total": 139.93},
+              {"OrderDate": "2022-03", "Region": "Central", "Total": 249.5},
+              {"OrderDate": "2022-04", "Region": "Central", "Total": 131.34},
+              {"OrderDate": "2022-04", "Region": "East", "Total": 479.04},
+              {"OrderDate": "2022-05", "Region": "Central", "Total": 68.37},
+              {"OrderDate": "2022-05", "Region": "Central", "Total": 719.2},
+              {"OrderDate": "2022-06", "Region": "Central", "Total": 625},
+              {"OrderDate": "2022-07", "Region": "East", "Total": 309.38},
+              {"OrderDate": "2022-07", "Region": "Central", "Total": 686.95},
+              {"OrderDate": "2022-08", "Region": "Central", "Total": 1005.9},
+              {"OrderDate": "2022-08", "Region": "West", "Total": 825},
+              {"OrderDate": "2022-09", "Region": "Central", "Total": 9.03},
+              {"OrderDate": "2022-09", "Region": "West", "Total": 151.24},
+              {"OrderDate": "2022-10", "Region": "West", "Total": 1139.43},
+              {"OrderDate": "2022-10", "Region": "Central", "Total": 18.06},
+              {"OrderDate": "2022-11", "Region": "Central", "Total": 54.89},
+              {"OrderDate": "2022-12", "Region": "Central", "Total": 1879.06},
+              {"OrderDate": "2022-12", "Region": "Central", "Total": 139.72}
+            ]
+          },
+          "facet": {
+            "column": {"field": "Region", "type": "nominal", "title": "Region"}
+          },
+          "spec": {
+            "mark": "line",
+            "encoding": {
+              "x": {
+                "field": "OrderDate",
+                "type": "ordinal",
+                "title": "(Month/Year)"
+              },
+              "y": {
+                "field": "Total",
+                "type": "quantitative",
+                "title": "Total Sales"
+              },
+              "color": {"field": "Region", "type": "nominal", "legend": null},
+              "tooltip": [
+                {"field": "Region", "type": "nominal", "title": "Region"},
+                {
+                  "field": "Total",
+                  "type": "quantitative",
+                  "title": "Total Sales"
+                },
+                {
+                  "field": "FormattedDate",
+                  "type": "ordinal",
+                  "title": "Order Date"
+                }
+              ]
+            }
+          },
+          "config": {}
+        }
+      ]
+    }
+  ],
+  "config": {}
+}
+
+      vegaEmbed("#vis", spec, { actions: false }).catch(console.error);
+    </script>
+  </body>
+</html>
